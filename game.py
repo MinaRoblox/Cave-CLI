@@ -6,6 +6,7 @@ from sprites import *
 
 future_x = 0
 future_y = 0
+collistion = True
 
 #############
 
@@ -38,31 +39,30 @@ class Functions:
 
     def movePlayer(direction):
         global future_x, future_y
-        future_x, future_y = Positions.player_posX, Positions.player_posY
+        current_x, current_y = Positions.player_posX, Positions.player_posY
+        future_x, future_y = current_x, current_y
 
-        game_board[Positions.player_posX][Positions.player_posY] = "0"
-        """
-        
-        Alright, so there is some black magic that makes it so that posX and posY
-        are switched. So the code is reversed so that if it moves up, the posX variable
-        is changed.
-        
-        """
-        if (direction == "w" or direction == "W") and Positions.player_posX > 0:
+        # Determine the future position based on direction
+        if (direction == "w" or direction == "W") and current_x > 0:
             future_x -= 1
-
-        if (direction == "s" or direction == "S") and Positions.player_posX < 6:
+        elif (direction == "s" or direction == "S") and current_x < len(game_board) - 1:
             future_x += 1
-
-        if (direction == "a" or direction == "A") and Positions.player_posY > 0:
+        elif (direction == "a" or direction == "A") and current_y > 0:
             future_y -= 1
-
-        if (direction == "d" or direction == "D") and Positions.player_posY < 6:
+        elif (direction == "d" or direction == "D") and current_y < len(game_board[0]) - 1:
             future_y += 1
 
-        Positions.player_posX = future_x
-        Positions.player_posY = future_y
+        # Check for collision with borders
+        if (future_x, future_y) not in Positions.bordersPositions:
+            # No collision, update player position
+            Positions.player_posX, Positions.player_posY = future_x, future_y
+            collistion = False
+        else:
+            # Collision detected, retain current position
+            collistion = True
 
+        # Update game board
+        game_board[current_x][current_y] = "0"  # Clear the old position
         game_board[Positions.player_posX][Positions.player_posY] = player_design
 
 
@@ -87,9 +87,6 @@ def gameLoop():
         if playerDir == "q" or playerDir == "Q":
             os.system("clear")
             exit()
-
-        elif debugMode == True:
-            print(f"The letter '{playerDir}' was typed.")
 
         Functions.movePlayer(playerDir)
         os.system("clear")
