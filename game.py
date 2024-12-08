@@ -1,5 +1,6 @@
 from gameEngineLibraries import *
 from sprites import *
+from colorama import Fore, Back, Style
 
 #############
 # Things
@@ -7,11 +8,12 @@ from sprites import *
 future_x = 0
 future_y = 0
 collistion = True
+playG = False
 
 #############
 
 class Functions:
-    def playerInputReceiver():
+    def playerInputReceiver(): # Ignore this variable.
         # Save the terminal settings
         old_settings = termios.tcgetattr(sys.stdin)
         try:
@@ -24,7 +26,7 @@ class Functions:
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
         return char
 
-    def gameBoardShower():
+    def gameBoardShower(): # Somewhat important.
         game_board[Positions.player_posX][Positions.player_posY] = player_design
         def printGameBoard():
             for line in game_board:
@@ -37,7 +39,7 @@ class Functions:
         drawBorders()
         printGameBoard()
 
-    def movePlayer(direction):
+    def movePlayer(direction): # This is the thing that makes the player move and collision.
         global future_x, future_y
         current_x, current_y = Positions.player_posX, Positions.player_posY
         future_x, future_y = current_x, current_y
@@ -78,18 +80,68 @@ class Positions:
                         (8, 1), (8, 2), (8, 3), (8, 4), (8, 5), (8, 6), (8, 7), (8, 8),
                         (1, 8), (2, 8), (3, 8), (4, 8), (5, 8), (6, 8), (7, 8)]
 
-def gameLoop():
-    while True:
-        Functions.gameBoardShower()
-        print("Input a valid direction!")
-        playerDir = Functions.playerInputReceiver()
+class Menu:
+    def gameLoop():
+        while True:
+            Functions.gameBoardShower()
+            print("Input a valid direction!")
+            playerDir = Functions.playerInputReceiver()
 
-        if playerDir == "q" or playerDir == "Q":
+            if playerDir == "q" or playerDir == "Q":
+                os.system("clear")
+                exit()
+
+            Functions.movePlayer(playerDir)
             os.system("clear")
-            exit()
 
-        Functions.movePlayer(playerDir)
-        os.system("clear")
+    def starter_menu():
+        while True:
+            print(f"""
+
+                Cave-CLI.
+                Made by MinaRoblox.
+                
+                Availible commands are:
+                
+                play
+                help
+                exit
+                    
+                {mandatory_message}
+
+            """)
+
+            what_to_do = input(">>> ")
+
+            if what_to_do == "play":
+                os.system("clear")
+                playG = True
+                break
+
+            elif what_to_do == "help":
+                os.system("clear")
+                print("""
+
+                In this game, the story isn't developed
+                yet.
+                    
+                    """)
+                
+                kldsfngijodsfhgoiefsng = input("Press enter to continue >>>")
+            
+            elif what_to_do == "exit":
+                os.system("clear")
+                confirm_exit = input("Type exit again to confirm: ")
+                if confirm_exit == "exit":
+                    os.system("clear")
+                    print("See ya.")
+                    exit()
+
+            os.system("clear")
+
+        if playG:
+            Menu.gameLoop()
 
 if __name__ == '__main__':
-    gameLoop()
+    erorr_asddfjf = 0
+    Menu.starter_menu()

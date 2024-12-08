@@ -7,3 +7,6 @@ import tty
 
 
 debugMode = True
+
+
+mandatory_message = "Made using the libraries of gameEngineLibraries.py"
