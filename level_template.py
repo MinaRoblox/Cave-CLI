@@ -1,56 +1,7 @@
 from gameEngineLibraries import *
 from sprites import *
 
-def menu():
-    def starter_menu():
-        while True:
-            print(f"""
-
-            Cave-CLI.
-            Made by MinaRoblox.
-                    
-            Availible commands are:
-                    
-            play
-            help
-            exit
-                        
-            {mandatory_message}
-
-            """)
-
-            what_to_do = input(">>> ")
-
-            if what_to_do == "play":
-                os.system("clear")
-                playG = True
-                break
-
-            elif what_to_do == "help":
-                os.system("clear")
-                print("""
-
-                In this game, the story isn't developed
-                yet.
-                            
-                """)
-                        
-                kldsfngijodsfhgoiefsng = input("Press enter to continue >>>")
-                    
-            elif what_to_do == "exit":
-                os.system("clear")
-                confirm_exit = input("Type exit again to confirm: ")
-                if confirm_exit == "exit":
-                    os.system("clear")
-                    print("See ya.")
-                    exit()
-
-            os.system("clear")
-
-        if playG:
-            Level1()
-
-def Level1():
+def level_number():
     #############
     # Things
 
@@ -143,5 +94,6 @@ def Level1():
                 Functions.movePlayer(playerDir)
                 os.system("clear")
 
-if __name__ == "__main__":
-    Level1()
+    Menu.gameLoop()
+
+level_number()
