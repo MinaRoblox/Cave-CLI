@@ -67,16 +67,16 @@ class Functions:
 
 
 class Positions:
-    player_posX, player_posY = 3, 3
+    player_posX, player_posY = 4, 4
 
     # First row of bP are the left side.
     # Second row of bP are the center up side.
     # Third row of bP are the right side.
     # Fourth and last row are the center down side. 
-    bordersPositions = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6),
-                        (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0),
-                        (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6),
-                        (1, 6), (2, 6), (3, 6), (4, 6), (5, 6)]
+    bordersPositions = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8),
+                        (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0),
+                        (8, 1), (8, 2), (8, 3), (8, 4), (8, 5), (8, 6), (8, 7), (8, 8),
+                        (1, 8), (2, 8), (3, 8), (4, 8), (5, 8), (6, 8), (7, 8)]
 
 def gameLoop():
     while True:
