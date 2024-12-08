@@ -4,6 +4,7 @@ import time
 import random
 import termios
 import tty
+from colorama import Fore, Back, Style
 
 
 debugMode = True

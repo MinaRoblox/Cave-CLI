@@ -1,6 +1,5 @@
 from gameEngineLibraries import *
 from sprites import *
-from colorama import Fore, Back, Style
 
 #############
 # Things
