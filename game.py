@@ -49,6 +49,8 @@ def menu():
 
         if playG:
             Level1()
+    
+    starter_menu()
 
 def Level1():
     #############
