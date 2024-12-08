@@ -1,5 +1,4 @@
 from gameEngineLibraries import *
-from sprites import *
 
 def level_number():
     #############

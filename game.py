@@ -1,5 +1,4 @@
 from gameEngineLibraries import *
-from sprites import *
 
 def menu():
     def starter_menu():
@@ -145,5 +144,7 @@ def Level1():
                 Functions.movePlayer(playerDir)
                 os.system("clear")
 
+    Menu.gameLoop()        
+    
 if __name__ == "__main__":
-    Level1()
+    menu()
