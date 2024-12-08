@@ -90,7 +90,7 @@ class Levels:
                 drawBorders()
                 printGameBoard()
 
-            def movePlayer(direction): # This is the thing that makes the player move and collision.
+            def movePlayer(direction):
                 global future_x, future_y
                 current_x, current_y = Positions.player_posX, Positions.player_posY
                 future_x, future_y = current_x, current_y
@@ -106,13 +106,16 @@ class Levels:
                     future_y += 1
 
                 # Check for collision with borders
-                if (future_x, future_y) not in Positions.bordersPositions:
-                    # No collision, update player position
+                if (future_y, future_x) not in Positions.bordersPositions:  # Match format
                     Positions.player_posX, Positions.player_posY = future_x, future_y
-                    collistion = False
+                    collision = False
                 else:
-                    # Collision detected, retain current position
-                    collistion = True
+                    collision = True
+                    
+                if debugMode or productionMode:
+                    # Debugging
+                    print(f"Future Position: ({future_x}, {future_y})")
+                    print(f"Collision Detected: {collision}")
 
                 # Update game board
                 game_board[current_x][current_y] = "0"  # Clear the old position

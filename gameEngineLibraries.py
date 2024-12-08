@@ -8,8 +8,8 @@ from sprites import *
 from colorama import Fore, Back, Style
 
 
-debugMode = False
-productionMode = True
+debugMode = True
+productionMode = False
 
 
 mandatory_message = "Made using the libraries of gameEngineLibraries.py"
