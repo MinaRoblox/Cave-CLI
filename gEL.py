@@ -9,7 +9,7 @@ from colorama import Fore, Back, Style
 
 
 debugMode = False
-productionMode = True
+productionMode = False
 
 
 mandatory_message = "Made using the libraries of gameEngineLibraries.py"

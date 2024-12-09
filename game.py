@@ -30,12 +30,15 @@ class Levels:
                     os.system("clear")
                     print("""
 
-                    In this game, the story isn't developed
-                    yet.
+                    In this game, you have lost your kitty. Luckily,
+                    you put a tracker in your kitty, and it leads to
+                    the National Cave of Cat Literature Igress
+                    Your goal is to go from several mazes to find your
+                    most important possesion, your kitty.
                                 
                     """)
                             
-                    kldsfngijodsfhgoiefsng = input("Press enter to continue >>>")
+                    kldsfngijodsfhgoiefsng = input("Press enter to continue >>> ")
                         
                 elif what_to_do == "exit":
                     os.system("clear")
@@ -60,6 +63,7 @@ class Levels:
         future_y = 0
         collistion = True
         playG = False
+        specials1_collision = False
 
         #############
 
@@ -119,44 +123,61 @@ class Levels:
             def movePlayer(direction):
                 global specials_design, player_design
                 global future_x, future_y
+                global collision, already_spoken
+                collision = False
+
+                # Get current position
                 current_x, current_y = Positions.player_posX, Positions.player_posY
                 future_x, future_y = current_x, current_y
 
                 # Determine the future position based on direction
-                if (direction == "w" or direction == "W") and current_x > 0:
+                if direction in ("w", "W") and current_x > 0:
                     future_x -= 1
-                elif (direction == "s" or direction == "S") and current_x < len(game_board) - 1:
+                elif direction in ("s", "S") and current_x < len(game_board) - 1:
                     future_x += 1
-                elif (direction == "a" or direction == "A") and current_y > 0:
+                elif direction in ("a", "A") and current_y > 0:
                     future_y -= 1
-                elif (direction == "d" or direction == "D") and current_y < len(game_board[0]) - 1:
+                elif direction in ("d", "D") and current_y < len(game_board[0]) - 1:
                     future_y += 1
 
-                # Check for collision with borders
-                if (future_y, future_x) not in Positions.bordersPositions:  # Match format
-                    Positions.player_posX, Positions.player_posY = future_x, future_y
-                    collision = False
-                else:
+                # Check for collisions with borders
+                if (future_y, future_x) in Positions.bordersPositions:
                     collision = True
+                    if debugMode or productionMode:
+                        print(f"Collision with border at ({future_x}, {future_y})")
+                    return  # Stop further processing if hitting a border
 
+                # Check for collisions with specials
                 if (future_x, future_y) == (Positions.special1_posX, Positions.special1_posY):
                     New_specials_design = Functions.StrToIntSummerToStr(player_design, specials_design)
                     specials_design = New_specials_design
                     player_design = New_specials_design
-                else:
-                    Positions.player_posX, Positions.player_posY = future_x, future_y
-                    specials_design = "3"
-                    player_design = "1"
-                    collision = False
+                    specials1_collision = True
+                    if debugMode or productionMode:
+                        print(f"Collision with special at ({future_x}, {future_y})")
                     
+                    if Positions.already_spoken == False:
+                        Functions.type_write("Guy: Hello, what I can I offer you sir?\nYou: Hello, have you seen a kitty walk in here? My tracker leads me here.\nGuy: Sorry sir. I did see one, but I ignored it. It might be inside the caves here.\nYou: oh.", 0.03)
+                        Positions.already_spoken = True
+
+                else: 
+                    specials1_collision = False
+                    player_design = "1"
+                    specials_design = "3"
+
+
+                # Update player position
+                Positions.player_posX, Positions.player_posY = future_x, future_y
+
+                # Clear old position and update new position on the game board
+                game_board[current_x][current_y] = "0"  # Clear old position
+                game_board[Positions.player_posX][Positions.player_posY] = player_design
+
                 if debugMode or productionMode:
                     # Debugging
                     print(f"Future Position: ({future_x}, {future_y})")
                     print(f"Collision Detected: {collision}")
 
-                # Update game board
-                game_board[current_x][current_y] = "0"  # Clear the old position
-                game_board[Positions.player_posX][Positions.player_posY] = player_design
 
         class Positions:
             player_posX, player_posY = 7, 4
@@ -175,6 +196,8 @@ class Levels:
             
             special1_posX, special1_posY = 2, 2
 
+            already_spoken = False
+
         class Specials:
             """
             
@@ -192,8 +215,12 @@ class Levels:
 
         class Menu:
             def gameLoop():
+                global already_spoken
                 while True:
                     Functions.gameBoardShower()
+                    if Positions.already_spoken:
+                        print("Objective: Go find your kitty inside the cave.")
+
                     print("Input a valid direction!")
                     playerDir = Functions.playerInputReceiver()
 
