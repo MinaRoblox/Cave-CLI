@@ -64,6 +64,8 @@ class Levels:
         collistion = True
         playG = False
         specials1_collision = False
+        specials2_collision = False
+        alreadyTped = False
 
         #############
 
@@ -147,24 +149,45 @@ class Levels:
                         print(f"Collision with border at ({future_x}, {future_y})")
                     return  # Stop further processing if hitting a border
 
-                # Check for collisions with specials
+                # Check for collisions with specials (special1)
                 if (future_x, future_y) == (Positions.special1_posX, Positions.special1_posY):
                     New_specials_design = Functions.StrToIntSummerToStr(player_design, specials_design)
                     specials_design = New_specials_design
                     player_design = New_specials_design
                     specials1_collision = True
                     if debugMode or productionMode:
-                        print(f"Collision with special at ({future_x}, {future_y})")
-                    
-                    if Positions.already_spoken == False:
-                        Functions.type_write("Guy: Hello, what I can I offer you sir?\nYou: Hello, have you seen a kitty walk in here? My tracker leads me here.\nGuy: Sorry sir. I did see one, but I ignored it. It might be inside the caves here.\nYou: oh.", 0.03)
-                        Positions.already_spoken = True
+                        print(f"Collision with special1 at ({future_x}, {future_y})")
 
-                else: 
+                    if not Positions.already_spoken:
+                        Functions.type_write(
+                            "Guy: Hello, what can I offer you sir?\n"
+                            "You: Hello, have you seen a kitty walk in here? My tracker leads me here.\n"
+                            "Guy: Sorry sir. I did see one, but I ignored it. It might be inside the caves here.\n"
+                            "You: Oh.",
+                            0.03
+                        )
+                        Positions.already_spoken = True
+                else:
                     specials1_collision = False
                     player_design = "1"
                     specials_design = "3"
 
+                # Check for collisions with specials (special2)
+                if (future_x, future_y) == (Positions.special2_posX, Positions.special2_posY):
+                    New_specials1_design = Functions.StrToIntSummerToStr(player_design, specials_design)
+                    specials2_design = New_specials1_design
+                    player_design = New_specials1_design
+                    specials2_collision = True
+                    if debugMode or productionMode:
+                        print(f"Collision with special2 at ({future_x}, {future_y})")
+
+                    if not Positions.alreadyTped:
+                        Functions.type_write("You are gonna tpppeeedd", 0.03)
+                        Positions.alreadyTped = True
+                else:
+                    specials2_collision = False
+                    player_design = "1"
+                    specials2_design = "3"
 
                 # Update player position
                 Positions.player_posX, Positions.player_posY = future_x, future_y
@@ -174,10 +197,14 @@ class Levels:
                 game_board[Positions.player_posX][Positions.player_posY] = player_design
 
                 if debugMode or productionMode:
-                    # Debugging
+                    # Debugging output
                     print(f"Future Position: ({future_x}, {future_y})")
                     print(f"Collision Detected: {collision}")
 
+                if debugMode or productionMode:
+                    # Debugging output
+                    print(f"Future Position: ({future_x}, {future_y})")
+                    print(f"Collision Detected: {collision}")
 
         class Positions:
             player_posX, player_posY = 7, 4
@@ -195,8 +222,10 @@ class Levels:
                                 (3, 3), (2, 3), (1, 3), (6, 3), (6, 2), (6, 1)]
             
             special1_posX, special1_posY = 2, 2
+            special2_posX, special2_posY = 1, 7
 
             already_spoken = False
+            alreadyTped = False
 
         class Specials:
             """
@@ -207,11 +236,14 @@ class Levels:
 
             special1_posX = Positions.special1_posX
             special1_posY = Positions.special1_posY
+            special2_posX = Positions.special2_posX
+            special2_posY = Positions.special2_posY
 
             def drawSpecials(specialPosX, specialPosY):
-                 game_board[specialPosX][specialPosY] = specials_design
+                 game_board[specialPosX][specialPosY] = specials2_design
 
             drawSpecials(special1_posX, special1_posY)
+            drawSpecials(special2_posX, special2_posY)
 
         class Menu:
             def gameLoop():
